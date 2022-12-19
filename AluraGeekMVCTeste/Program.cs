@@ -1,7 +1,16 @@
+using AluraGeekMVCTeste.Models.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//registrar httpcliente
+builder.Services.AddHttpClient("AluraGeek",
+    client => client.BaseAddress = new Uri(builder.Configuration["ServiceUri:AluraGeek"]));
+
+//registrar produtoService
+builder.Services.AddTransient<ProdutosServices>();
 
 var app = builder.Build();
 
