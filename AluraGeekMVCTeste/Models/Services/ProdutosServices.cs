@@ -125,6 +125,8 @@ namespace AluraGeekMVCTeste.Models.Services
 
 
         //metodo para deletar um produto
+        //nao funciona
+        
         public async Task<Produtos> DeleteAsync(int id)
         {
             var client = _clientFactory.CreateClient("AluraGeek");
