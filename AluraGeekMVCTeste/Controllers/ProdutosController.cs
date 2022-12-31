@@ -67,16 +67,14 @@ namespace AluraGeekMVCTeste.Controllers
 
         //metodo put assincrono, edita um produto
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Produtos produto)
+        public async Task<IActionResult> Edit(Produtos produto)
         {
-            //verificar se o modelo é valido
-            if (ModelState.IsValid)
-            {
-                //editar produto
-                await _produtosServices.UpdateProdutoAsync(produto, id);
+          
+               //editar produto
+                await _produtosServices.UpdateProdutoAsync(produto);
                 //redirecionar para a pagina inicial
                 return RedirectToAction(nameof(Index));
-            }
+            
             //retornar view
             return View(produto);
         }
@@ -90,11 +88,13 @@ namespace AluraGeekMVCTeste.Controllers
         }
 
         //metodo delete, deletar um produto
-        [HttpPost, ActionName("Apagar")]
-        public async Task<IActionResult> Delete(int id, Produtos produto)
+        [HttpPost(), ActionName("Apagar")]
+        public async Task<IActionResult> DeleteConfirmado(Produtos produto)
         {
+            var produtos = await _produtosServices.GetProdutoAsync(produto.ProdutoId);
+
             //deletar produto
-            await _produtosServices.DeleteAsync(produto.ProdutoId);
+            await _produtosServices.DeleteAsync(produtos.ProdutoId);
             //redirecionar para a pagina inicial
             return RedirectToAction(nameof(Index));
         }

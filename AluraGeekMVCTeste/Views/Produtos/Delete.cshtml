@@ -38,7 +38,10 @@
     </dl>
     
     <form asp-action="Apagar">
-        <input type="hidden" asp-for="ProdutoId" />
+                <input type="hidden" asp-for="ProdutoId" />
+                <input type="hidden" asp-for="Nome" />
+  <input type="hidden" asp-for="Preco" />
+  <input type="hidden" asp-for="Categoria" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

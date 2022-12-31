@@ -10,7 +10,7 @@ namespace AluraGeekMVCTeste.Models.Services
         private readonly string apiEndpoint = "/produtos/";
         private readonly string apiEndpointBuscar = "/produtos/buscar/id/";
         private readonly string apiEndpointCadastrar = "/produtos/cadastrar";
-        private readonly string apiEndpointEditar = "/Produtos/Editar/";
+        private readonly string apiEndpointEditar = "/Produtos/Atualizar/";
         private readonly string apiEndpointDeletar = "/Produtos/Deletar/";
 
 
@@ -79,6 +79,7 @@ namespace AluraGeekMVCTeste.Models.Services
 
                 return produto;
             }
+   
         }
 
         //metodo para cadastrar um produto
@@ -102,24 +103,23 @@ namespace AluraGeekMVCTeste.Models.Services
 
             }
         }
-
+        
         //metodo para modificar um produto
-        public async Task<Produtos> UpdateProdutoAsync(Produtos produto, int id)
+        public async Task<bool> UpdateProdutoAsync(Produtos produto)
         {
             var client = _clientFactory.CreateClient("AluraGeek");
-            var produtoJson = new StringContent(JsonSerializer.Serialize(produto), Encoding.UTF8, "application/json");
-            using (var response = await client.PutAsJsonAsync(apiEndpointEditar + id, produto))
+            
+            using (var response = await client.PutAsJsonAsync(apiEndpointEditar + produto.ProdutoId, produto))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    using (var responseStream = await response.Content.ReadAsStreamAsync())
-                        produto = await JsonSerializer.DeserializeAsync<Produtos>(responseStream, _options);
+                    return true;
                 }
                 else
                 {
-                    return (null);
+                    return false;
                 }
-                return produto;
+               
             }
         }
 
@@ -127,21 +127,20 @@ namespace AluraGeekMVCTeste.Models.Services
         //metodo para deletar um produto
         //nao funciona
         
-        public async Task<Produtos> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var client = _clientFactory.CreateClient("AluraGeek");
             using (var response = await client.DeleteAsync(apiEndpointDeletar + id))
             {
+                
                 if (response.IsSuccessStatusCode)
                 {
-                    using (var responseStream = await response.Content.ReadAsStreamAsync())
-                        produto = await JsonSerializer.DeserializeAsync<Produtos>(responseStream, _options);
+                    return true;
                 }
                 else
                 {
-                    return (null);
-                }
-                return produto;
+                    return false;
+                }          
             }
         }
     }
